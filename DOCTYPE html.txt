@@ -1,479 +1,221 @@
-DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Hens Farm</title>
+    <title>Happy Hens Farm - Your Source for Healthy Poultry</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts - Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- New Fonts: Merriweather for headings, Open Sans for body -->
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700;900&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        /* Custom styles for better aesthetics and specific elements */
         body {
-            font-family: 'Inter', sans-serif;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+            font-family: 'Open Sans', sans-serif; /* Body font */
+            background-color: #fcfceb; /* Very light creamy yellow */
+            color: #3f3f46; /* Zinc 700 - a warm dark gray */
         }
-        .product-card {
-            display: flex;
-            flex-direction: column;
-            border-radius: 0.75rem; /* rounded-xl */
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-lg */
-            transition: all 0.3s ease-in-out;
-            overflow: hidden;
-            background-color: #fff;
+        h1, h2, h3 {
+            font-family: 'Merriweather', serif; /* Headings font */
         }
-        .product-card:hover {
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-2xl */
+        .container {
+            max-width: 1200px;
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 1.5rem; /* Even more rounded corners */
+            box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.1), 0 10px 15px -8px rgba(0, 0, 0, 0.05); /* Deeper shadow */
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            border: 2px solid #fde68a; /* Warm yellow border */
+        }
+        .card:hover {
+            transform: translateY(-12px); /* Stronger lift */
+            box-shadow: 0 30px 50px -15px rgba(0, 0, 0, 0.2), 0 20px 20px -10px rgba(0, 0, 0, 0.1);
         }
         .btn-primary {
-            background-color: #10B981; /* green-600 */
-            color: #fff;
-            padding: 0.75rem 1.5rem; /* py-3 px-6 */
-            border-radius: 0.5rem; /* rounded-lg */
-            transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md */
+            background-color: #d97706; /* Amber 700 - a rich orange */
+            color: white;
+            padding: 1.1rem 2.8rem; /* Larger padding */
+            border-radius: 0.75rem; /* Rounded-xl */
+            transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out, box-shadow 0.2s ease-in-out;
+            font-weight: 700; /* Bold */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            text-transform: uppercase; /* Uppercase text */
+            letter-spacing: 0.05em; /* Slight letter spacing */
         }
         .btn-primary:hover {
-            background-color: #059669; /* green-700 */
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* hover:shadow-lg */
+            background-color: #b45309; /* Darker amber on hover */
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
         }
-        .btn-secondary {
-            background-color: #E5E7EB; /* gray-200 */
-            color: #4B5563; /* gray-700 */
-            padding: 0.5rem; /* p-2 */
-            border-radius: 0.375rem; /* rounded-md */
-            transition: background-color 0.3s ease-in-out;
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: none;
         }
-        .btn-secondary:hover {
-            background-color: #D1D5DB; /* gray-300 */
+        .accent-color-1 {
+            color: #d97706; /* Amber 700 */
         }
-        .btn-secondary:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        .btn-danger {
-            color: #DC2626; /* red-600 */
-            transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out;
-        }
-        .btn-danger:hover {
-            color: #B91C1C; /* red-800 */
-            background-color: #FEE2E2; /* red-100 */
-        }
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(17, 24, 39, 0.75); /* gray-900 with opacity */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 50;
-            padding: 1rem;
-        }
-        .modal-content {
-            background-color: #fff;
-            border-radius: 0.75rem; /* rounded-xl */
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); /* shadow-2xl */
-            width: 100%;
-            max-width: 42rem; /* max-w-2xl */
-            max-height: 90vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-        .cart-item-img {
-            width: 5rem; /* w-20 */
-            height: 5rem; /* h-20 */
-            object-fit: cover;
-            border-radius: 0.375rem; /* rounded-md */
-        }
-        /* Hide scrollbar for aesthetic purposes, but keep scroll functionality */
-        .overflow-y-auto::-webkit-scrollbar {
-            display: none;
-        }
-        .overflow-y-auto {
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
+        .accent-color-2 {
+            color: #16a34a; /* Green 600 */
         }
     </style>
 </head>
-<body class="min-h-screen bg-gray-100">
-
-    <!-- Header -->
-    <header class="bg-gradient-to-r from-green-600 to-lime-700 text-white p-4 shadow-lg rounded-b-lg">
-        <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-3xl font-bold">Happy Hens Farm</h1>
-            <button id="cart-button"
-                class="relative p-2 rounded-full bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-green-300 transition-all duration-300"
-                aria-label="View shopping cart">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-                <span id="cart-item-count"
-                    class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full transform translate-x-1/2 -translate-y-1/2 hidden">
-                    0
-                </span>
-            </button>
+<body class="flex flex-col min-h-screen">
+    <!-- Header Section -->
+    <header class="bg-amber-800 text-white p-8 shadow-xl rounded-b-3xl">
+        <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
+            <h1 class="text-6xl font-extrabold mb-4 md:mb-0">Happy Hens Farm</h1>
+            <nav>
+                <ul class="flex space-x-10 text-2xl">
+                    <li><a href="#about" class="hover:underline hover:text-amber-200 transition duration-200">About Us</a></li>
+                    <li><a href="#hens" class="hover:underline hover:text-amber-200 transition duration-200">Our Hens</a></li>
+                    <li><a href="#contact" class="hover:underline hover:text-amber-200 transition duration-200">Contact</a></li>
+                </ul>
+            </nav>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main class="container mx-auto py-8">
-        <h2 class="text-4xl font-bold text-gray-800 mb-8 text-center">Our Happy Hens</h2>
-        <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 p-6">
-            <!-- Product cards will be injected here by JavaScript -->
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-br from-amber-600 to-yellow-500 text-white py-32 text-center rounded-3xl mx-8 mt-12 shadow-2xl">
+        <div class="container mx-auto px-10">
+            <h2 class="text-8xl font-extrabold mb-10 leading-tight drop-shadow-lg">Healthy Hens for Your <span class="accent-color-2">Farm & Home!</span></h2>
+            <p class="text-2xl mb-14 leading-relaxed max-w-5xl mx-auto">
+                Discover a variety of happy, healthy hens ready to join your flock.
+                Whether you're looking for prolific layers, hearty broilers, or just friendly companions, we have the perfect poultry for you.
+            </p>
+            <a href="#hens" class="btn-primary text-3xl font-bold inline-block hover:shadow-xl">Explore Our Hens</a>
         </div>
-    </main>
+    </section>
 
-    <!-- Cart Modal -->
-    <div id="cart-modal" class="modal-overlay hidden">
-        <div class="modal-content">
-            <div class="flex justify-between items-center p-6 border-b border-gray-200">
-                <h2 class="text-2xl font-bold text-gray-800">Your Cart (<span id="cart-total-items">0</span> hens)</h2>
-                <button id="close-cart-button" class="text-gray-500 hover:text-gray-700 text-3xl font-bold" aria-label="Close cart">&times;</button>
-            </div>
-            <div id="cart-items-container" class="p-6 overflow-y-auto flex-grow">
-                <!-- Cart items will be injected here by JavaScript -->
-                <p id="empty-cart-message" class="text-center text-gray-600 text-lg py-10">Your cart is empty.</p>
-            </div>
-            <div class="p-6 border-t border-gray-200 flex justify-between items-center">
-                <span class="text-xl font-bold text-gray-800">Total: <span id="cart-total-price">$0.00</span></span>
-                <button id="checkout-button" class="btn-primary" disabled>Proceed to Checkout</button>
+    <!-- About Us Section -->
+    <section id="about" class="py-28 px-6">
+        <div class="container mx-auto text-center">
+            <h2 class="text-6xl font-bold text-amber-800 mb-16">About Happy Hens Farm</h2>
+            <p class="text-xl leading-relaxed max-w-5xl mx-auto text-gray-700">
+                At Happy Hens Farm, we are deeply committed to raising healthy, happy chickens in a humane and natural environment.
+                Our hens are fed high-quality, organic feed and enjoy ample space to roam freely, forage, and express their natural behaviors.
+                We believe that well-cared-for hens produce the finest eggs and make the most joyful additions to any farm or backyard.
+                Explore our selection and welcome new feathered friends into your life, raised with genuine care and passion!
+            </p>
+        </div>
+    </section>
+
+    <!-- Hens for Sale Section -->
+    <section id="hens" class="py-28 bg-yellow-50 px-6">
+        <div class="container mx-auto">
+            <h2 class="text-6xl font-bold text-amber-800 text-center mb-20">Our Lovely Hens</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16">
+                <!-- Hen Card 1 -->
+                <div class="card p-12 flex flex-col items-center text-center">
+                    <img src="https://placehold.co/450x350/d97706/FFFFFF?text=Lohmann+Brown" alt="Lohmann Brown Hen" class="w-full h-72 object-cover mb-12 rounded-2xl shadow-lg">
+                    <h3 class="text-4xl font-semibold text-gray-900 mb-6">Lohmann Brown</h3>
+                    <p class="text-gray-700 mb-10 leading-relaxed">
+                        Renowned for being exceptional layers, consistently producing large, rich brown eggs. They are very docile and easy to manage, making them an ideal choice for first-time chicken keepers.
+                    </p>
+                    <span class="accent-color-1 text-4xl font-bold mb-10">$25.00</span>
+                    <button class="btn-primary">Inquire Now</button>
+                </div>
+
+                <!-- Hen Card 2 -->
+                <div class="card p-12 flex flex-col items-center text-center">
+                    <img src="https://placehold.co/450x350/d97706/FFFFFF?text=Rhode+Island+Red" alt="Rhode Island Red Hen" class="w-full h-72 object-cover mb-12 rounded-2xl shadow-lg">
+                    <h3 class="text-4xl font-semibold text-gray-900 mb-6">Rhode Island Red</h3>
+                    <p class="text-gray-700 mb-10 leading-relaxed">
+                        A robust and versatile dual-purpose breed, highly valued for both their prolific egg production and quality meat. They are incredibly hardy and adapt well to various climates.
+                    </p>
+                    <span class="accent-color-1 text-4xl font-bold mb-10">$30.00</span>
+                    <button class="btn-primary">Inquire Now</button>
+                </div>
+
+                <!-- Hen Card 3 -->
+                <div class="card p-12 flex flex-col items-center text-center">
+                    <img src="https://placehold.co/450x350/d97706/FFFFFF?text=Plymouth+Rock" alt="Plymouth Rock Hen" class="w-full h-72 object-cover mb-12 rounded-2xl shadow-lg">
+                    <h3 class="text-4xl font-semibold text-gray-900 mb-6">Plymouth Rock</h3>
+                    <p class="text-gray-700 mb-10 leading-relaxed">
+                        A beloved heritage breed, known for their friendly disposition and calm temperament. They are consistent layers of large, beautiful brown eggs, perfect for any flock.
+                    </p>
+                    <span class="accent-color-1 text-4xl font-bold mb-10">$28.00</span>
+                    <button class="btn-primary">Inquire Now</button>
+                </div>
+
+                <!-- Hen Card 4 -->
+                <div class="card p-12 flex flex-col items-center text-center">
+                    <img src="https://placehold.co/450x350/d97706/FFFFFF?text=Leghorn" alt="Leghorn Hen" class="w-full h-72 object-cover mb-12 rounded-2xl shadow-lg">
+                    <h3 class="text-4xl font-semibold text-gray-900 mb-6">Leghorn</h3>
+                    <p class="text-gray-700 mb-10 leading-relaxed">
+                        Highly efficient and prolific white egg layers. These energetic and active birds thrive in free-ranging environments, making them a great choice for open spaces.
+                    </p>
+                    <span class="accent-color-1 text-4xl font-bold mb-10">$22.00</span>
+                    <button class="btn-primary">Inquire Now</button>
+                </div>
+
+                <!-- Hen Card 5 -->
+                <div class="card p-12 flex flex-col items-center text-center">
+                    <img src="https://placehold.co/450x350/d97706/FFFFFF?text=Orpington" alt="Orpington Hen" class="w-full h-72 object-cover mb-12 rounded-2xl shadow-lg">
+                    <h3 class="text-4xl font-semibold text-gray-900 mb-6">Orpington</h3>
+                    <p class="text-gray-700 mb-10 leading-relaxed">
+                        Large, fluffy, and incredibly friendly, Orpingtons are known for their gentle nature. They are excellent for families and provide a calming presence in any backyard flock.
+                    </p>
+                    <span class="accent-color-1 text-4xl font-bold mb-10">$35.00</span>
+                    <button class="btn-primary">Inquire Now</button>
+                </div>
+
+                <!-- Hen Card 6 -->
+                <div class="card p-12 flex flex-col items-center text-center">
+                    <img src="https://placehold.co/450x350/d97706/FFFFFF?text=Silkie" alt="Silkie Hen" class="w-full h-72 object-cover mb-12 rounded-2xl shadow-lg">
+                    <h3 class="text-4xl font-semibold text-gray-900 mb-6">Silkie</h3>
+                    <p class="text-gray-700 mb-10 leading-relaxed">
+                        Distinctive for their unique fluffy feathers and exceptionally gentle temperament. Silkies are often used as excellent broody hens, making them perfect for hatching eggs.
+                    </p>
+                    <span class="accent-color-1 text-4xl font-bold mb-10">$40.00</span>
+                    <button class="btn-primary">Inquire Now</button>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white p-6 mt-10 rounded-t-lg">
-        <div class="container mx-auto text-center text-sm">
-            &copy; <span id="current-year"></span> Happy Hens Farm. All rights reserved.
-            <p>123 Farm Lane, Rural Town, State, 12345</p>
-            <p>Email: info@happyhensfarm.com | Phone: (123) 456-7890</p>
+    <!-- Contact Section -->
+    <section id="contact" class="py-28 px-6 bg-white">
+        <div class="container mx-auto text-center">
+            <h2 class="text-6xl font-bold text-amber-800 mb-16">Get in Touch!</h2>
+            <p class="text-xl leading-relaxed max-w-4xl mx-auto mb-14 text-gray-700">
+                Have questions about our hens, their care, or ready to make a purchase? We'd love to hear from you!
+                Fill out the form below or contact us directly.
+            </p>
+            <div class="max-w-2xl mx-auto bg-yellow-50 p-14 rounded-3xl shadow-2xl border border-yellow-100">
+                <form class="space-y-12">
+                    <div>
+                        <label for="name" class="block text-left text-gray-800 text-xl font-medium mb-5">Your Name</label>
+                        <input type="text" id="name" name="name" class="w-full p-6 border-2 border-yellow-300 rounded-lg focus:outline-none focus:ring-4 focus:ring-amber-500 transition duration-200 text-xl" placeholder="John Doe">
+                    </div>
+                    <div>
+                        <label for="email" class="block text-left text-gray-800 text-xl font-medium mb-5">Your Email</label>
+                        <input type="email" id="email" name="email" class="w-full p-6 border-2 border-yellow-300 rounded-lg focus:outline-none focus:ring-4 focus:ring-amber-500 transition duration-200 text-xl" placeholder="john.doe@example.com">
+                    </div>
+                    <div>
+                        <label for="message" class="block text-left text-gray-800 text-xl font-medium mb-5">Your Message</label>
+                        <textarea id="message" name="message" rows="8" class="w-full p-6 border-2 border-yellow-300 rounded-lg focus:outline-none focus:ring-4 focus:ring-amber-500 transition duration-200 text-xl" placeholder="I'm interested in purchasing..."></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary w-full text-3xl font-bold">Send Message</button>
+                </form>
+                <div class="mt-16 text-gray-800">
+                    <p class="text-2xl mb-6">Or contact us directly:</p>
+                    <p class="font-bold accent-color-1 text-3xl">Email: info@happyhensfarm.com</p>
+                    <p class="font-bold accent-color-1 text-3xl">Phone: +1 (123) 456-7890</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="bg-amber-900 text-white py-14 mt-auto rounded-t-3xl">
+        <div class="container mx-auto text-center px-6">
+            <p class="text-xl">&copy; 2025 Happy Hens Farm. All rights reserved.</p>
+            <p class="mt-5 text-lg">Proudly providing healthy poultry to happy homes since 2020.</p>
+            <div class="flex justify-center space-x-10 mt-10">
+                <a href="#" class="text-white hover:text-amber-200 transition duration-200 text-lg">Privacy Policy</a>
+                <a href="#" class="text-white hover:text-amber-200 transition duration-200 text-lg">Terms of Service</a>
+            </div>
         </div>
     </footer>
-
-    <script>
-        // --- Product Data ---
-        const initialProducts = [
-            {
-                id: 'h1',
-                name: 'Rhode Island Red Hen',
-                description: 'A robust and friendly layer, known for consistent brown egg production. Excellent for backyard flocks.',
-                price: 2500.00,
-                imageUrl: 'https://images.pexels.com/photos/1216482/pexels-photo-1216482.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2', // Updated image URL
-                breed: 'Rhode Island Red',
-                age: '10 months',
-                minOrderQuantity: 1,
-            },
-            {
-                id: 'h2',
-                name: 'Plymouth Rock Hen',
-                description: 'Docile and dual-purpose, good for both eggs and meat. Known for their distinctive barred feather pattern.',
-                price: 28.00,
-                imageUrl: 'https://placehold.co/400x300/F5F5DC/333?text=Plymouth+Rock+Hen',
-                breed: 'Plymouth Rock',
-                age: '5 months',
-                minOrderQuantity: 1,
-            },
-            {
-                id: 'h3',
-                name: 'Leghorn Hen',
-                description: 'Prolific white egg layers, active and efficient. Ideal for high egg production.',
-                price: 22.00,
-                imageUrl: 'https://placehold.co/400x300/F5F5DC/333?text=Leghorn+Hen',
-                breed: 'Leghorn',
-                age: '7 months',
-                minOrderQuantity: 1,
-            },
-            {
-                id: 'h4',
-                name: 'Orpington Hen',
-                description: 'A large, fluffy, and very friendly breed, perfect for families. Lays light brown eggs.',
-                price: 30.00,
-                imageUrl: 'https://placehold.co/400x300/F5F5DC/333?text=Orpington+Hen',
-                breed: 'Orpington',
-                age: '6 months',
-                minOrderQuantity: 1,
-            },
-            {
-                id: 'h5',
-                name: 'Silkie Hen',
-                description: 'Known for their unique fluffy plumage and calm temperament. Excellent brooders and pets.',
-                price: 35.00,
-                imageUrl: 'https://placehold.co/400x300/F5F5DC/333?text=Silkie+Hen',
-                breed: 'Silkie',
-                age: '8 months',
-                minOrderQuantity: 1,
-            },
-            {
-                id: 'h6',
-                name: 'Sussex Hen',
-                description: 'A beautiful and inquisitive bird, good for both eggs and meat. Lays cream-colored eggs.',
-                price: 27.00,
-                imageUrl: 'https://placehold.co/400x300/F5F5DC/333?text=Sussex+Hen',
-                breed: 'Sussex',
-                age: '5 months',
-                minOrderQuantity: 1,
-            },
-        ];
-
-        // --- Global State ---
-        let cartItems = [];
-
-        // --- DOM Elements ---
-        const productListDiv = document.getElementById('product-list');
-        const cartButton = document.getElementById('cart-button');
-        const cartItemCountSpan = document.getElementById('cart-item-count');
-        const cartModal = document.getElementById('cart-modal');
-        const closeCartButton = document.getElementById('close-cart-button');
-        const cartItemsContainer = document.getElementById('cart-items-container');
-        const emptyCartMessage = document.getElementById('empty-cart-message');
-        const cartTotalItemsSpan = document.getElementById('cart-total-items');
-        const cartTotalPriceSpan = document.getElementById('cart-total-price');
-        const checkoutButton = document.getElementById('checkout-button');
-        const currentYearSpan = document.getElementById('current-year');
-
-        // --- Utility Functions ---
-
-        // Formats a number as currency (USD)
-        const formatCurrency = (amount) => {
-            return new Intl.NumberFormat('en-IN', { // Changed 'rupees' to 'INR' for Indian Rupees
-                style: 'currency',
-                currency: 'INR',
-            }).format(amount);
-        };
-
-        // Updates the cart item count badge in the header
-        const updateCartCountBadge = () => {
-            const totalCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-            cartItemCountSpan.textContent = totalCount;
-            if (totalCount > 0) {
-                cartItemCountSpan.classList.remove('hidden');
-            } else {
-                cartItemCountSpan.classList.add('hidden');
-            }
-        };
-
-        // Renders all product cards on the page
-        const renderProductCards = () => {
-            productListDiv.innerHTML = ''; // Clear existing cards
-            initialProducts.forEach(product => {
-                const productCardHtml = `
-                    <div class="product-card">
-                        <img
-                            src="${product.imageUrl}"
-                            alt="${product.name}"
-                            class="w-full h-48 object-cover rounded-t-xl"
-                            onerror="this.onerror=null; this.src='https://placehold.co/400x300/F5F5DC/333?text=${encodeURIComponent(product.name)}';"
-                        />
-                        <div class="p-6 flex flex-col flex-grow">
-                            <h3 class="text-xl font-semibold text-gray-800 mb-2">${product.name}</h3>
-                            <p class="text-gray-600 text-sm mb-2 flex-grow">${product.description}</p>
-                            <p class="text-gray-700 text-sm mb-1"><span class="font-medium">Breed:</span> ${product.breed}</p>
-                            <p class="text-gray-700 text-sm mb-4"><span class="font-medium">Age:</span> ${product.age}</p>
-                            <div class="flex items-baseline mb-3">
-                                <span class="text-green-600 font-bold text-2xl">${formatCurrency(product.price)}</span>
-                            </div>
-                            <p class="text-gray-700 text-sm mb-4">Min. Order: ${product.minOrderQuantity} unit${product.minOrderQuantity > 1 ? 's' : ''}</p>
-                            <div class="flex items-center mb-4">
-                                <label for="quantity-${product.id}" class="mr-2 text-gray-700">Quantity:</label>
-                                <input
-                                    type="number"
-                                    id="quantity-${product.id}"
-                                    min="${product.minOrderQuantity}"
-                                    value="${product.minOrderQuantity}"
-                                    class="w-24 p-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
-                                />
-                            </div>
-                            <button
-                                data-product-id="${product.id}"
-                                class="add-to-cart-btn mt-auto btn-primary"
-                            >
-                                Add to Cart
-                            </button>
-                        </div>
-                    </div>
-                `;
-                productListDiv.insertAdjacentHTML('beforeend', productCardHtml);
-            });
-
-            // Attach event listeners to all "Add to Cart" buttons
-            document.querySelectorAll('.add-to-cart-btn').forEach(button => {
-                button.addEventListener('click', (event) => {
-                    const productId = event.target.dataset.productId;
-                    const product = initialProducts.find(p => p.id === productId);
-                    const quantityInput = document.getElementById(`quantity-${productId}`);
-                    const quantity = parseInt(quantityInput.value);
-                    addToCart(product, quantity);
-                });
-            });
-        };
-
-        // Adds a product to the cart or updates its quantity
-        const addToCart = (product, quantity) => {
-            const existingItemIndex = cartItems.findIndex(item => item.id === product.id);
-
-            if (existingItemIndex > -1) {
-                cartItems[existingItemIndex].quantity += quantity;
-            } else {
-                cartItems.push({ ...product, quantity: quantity });
-            }
-            updateCartCountBadge();
-            renderCartItems(); // Re-render cart when items change
-        };
-
-        // Removes an item from the cart
-        const removeFromCart = (productId) => {
-            cartItems = cartItems.filter(item => item.id !== productId);
-            updateCartCountBadge();
-            renderCartItems(); // Re-render cart when items change
-        };
-
-        // Updates the quantity of an item in the cart
-        const updateCartQuantity = (productId, newQuantity) => {
-            cartItems = cartItems.map(item => {
-                if (item.id === productId) {
-                    // Ensure quantity doesn't go below minOrderQuantity
-                    const quantity = Math.max(newQuantity, item.minOrderQuantity);
-                    return { ...item, quantity: quantity };
-                }
-                return item;
-            }).filter(item => item.quantity > 0); // Remove if quantity becomes 0 (though buttons prevent this for minOrderQuantity 1)
-            updateCartCountBadge();
-            renderCartItems(); // Re-render cart when items change
-        };
-
-        // Renders the items inside the cart modal
-        const renderCartItems = () => {
-            cartItemsContainer.innerHTML = ''; // Clear existing items
-            let totalItemsInCart = 0;
-            let totalPriceInCart = 0;
-
-            if (cartItems.length === 0) {
-                emptyCartMessage.classList.remove('hidden');
-                checkoutButton.disabled = true;
-            } else {
-                emptyCartMessage.classList.add('hidden');
-                checkoutButton.disabled = false;
-                cartItems.forEach(item => {
-                    totalItemsInCart += item.quantity;
-                    totalPriceInCart += item.price * item.quantity;
-
-                    const cartItemHtml = `
-                        <li class="flex items-center bg-gray-50 p-4 rounded-lg shadow-sm">
-                            <img
-                                src="${item.imageUrl}"
-                                alt="${item.name}"
-                                class="cart-item-img mr-4"
-                            />
-                            <div class="flex-grow">
-                                <h3 class="font-semibold text-gray-800">${item.name}</h3>
-                                <p class="text-gray-600 text-sm">
-                                    ${formatCurrency(item.price)} x ${item.quantity} = ${formatCurrency(item.price * item.quantity)}
-                                </p>
-                                <p class="text-gray-500 text-xs">Min. Order: ${item.minOrderQuantity} unit${item.minOrderQuantity > 1 ? 's' : ''}</p>
-                            </div>
-                            <div class="flex items-center space-x-2">
-                                <button
-                                    data-product-id="${item.id}"
-                                    data-action="decrement"
-                                    class="cart-quantity-btn btn-secondary"
-                                    ${item.quantity <= item.minOrderQuantity ? 'disabled' : ''}
-                                >
-                                    -
-                                </button>
-                                <span class="font-medium text-gray-800 w-8 text-center">${item.quantity}</span>
-                                <button
-                                    data-product-id="${item.id}"
-                                    data-action="increment"
-                                    class="cart-quantity-btn btn-secondary"
-                                >
-                                    +
-                                </button>
-                                <button
-                                    data-product-id="${item.id}"
-                                    class="remove-from-cart-btn ml-4 btn-danger"
-                                    aria-label="Remove item from cart"
-                                >
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm6 0a1 1 0 11-2 0v6a1 1 0 112 0V8z" clip-rule="evenodd" />
-                                    </svg>
-                                </button>
-                            </div>
-                        </li>
-                    `;
-                    cartItemsContainer.insertAdjacentHTML('beforeend', cartItemHtml);
-                });
-
-                // Attach event listeners for quantity buttons and remove buttons in the cart
-                document.querySelectorAll('.cart-quantity-btn').forEach(button => {
-                    button.addEventListener('click', (event) => {
-                        const productId = event.target.dataset.productId;
-                        const action = event.target.dataset.action;
-                        const item = cartItems.find(i => i.id === productId);
-                        if (item) {
-                            if (action === 'increment') {
-                                updateCartQuantity(productId, item.quantity + 1);
-                            } else if (action === 'decrement') {
-                                updateCartQuantity(productId, item.quantity - 1);
-                            }
-                        }
-                    });
-                });
-
-                document.querySelectorAll('.remove-from-cart-btn').forEach(button => {
-                    button.addEventListener('click', (event) => {
-                        const productId = event.target.dataset.productId;
-                        removeFromCart(productId);
-                    });
-                });
-            }
-
-            cartTotalItemsSpan.textContent = totalItemsInCart;
-            cartTotalPriceSpan.textContent = formatCurrency(totalPriceInCart);
-        };
-
-        // --- Event Listeners ---
-
-        // Open cart modal
-        cartButton.addEventListener('click', () => {
-            cartModal.classList.remove('hidden');
-            renderCartItems(); // Ensure cart items are up-to-date when modal opens
-        });
-
-        // Close cart modal
-        closeCartButton.addEventListener('click', () => {
-            cartModal.classList.add('hidden');
-        });
-
-        // Close modal if clicking outside content
-        cartModal.addEventListener('click', (event) => {
-            if (event.target === cartModal) {
-                cartModal.classList.add('hidden');
-            }
-        });
-
-        // Checkout button placeholder
-        checkoutButton.addEventListener('click', () => {
-            // In a real application, this would lead to a checkout page or payment gateway
-            alert('Proceeding to checkout! (This is a placeholder action)');
-            cartItems = []; // Clear cart after "checkout"
-            updateCartCountBadge();
-            renderCartItems();
-            cartModal.classList.add('hidden');
-        });
-
-        // --- Initial Load ---
-        document.addEventListener('DOMContentLoaded', () => {
-            renderProductCards();
-            updateCartCountBadge(); // Initialize badge on load
-            currentYearSpan.textContent = new Date().getFullYear(); // Set current year in footer
-            console.log("Happy Hens Farm website loaded successfully!");
-        });
-    </script>
 </body>
 </html>
